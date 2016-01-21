@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (C) 2014 - Badr BADRI 
+# Copyright (C) 2016 - Sebastien Alaiwan
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 3
@@ -15,20 +15,28 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-function libsdl_get_deps {
-  local a=0
+function libsdlmixer_get_deps {
+  echo "libsdl1"
+  echo "mikmod"
 }
 
-function libsdl_build {
-  
+function libsdlmixer_build {
+
   local host=$1
   pushDir $WORK/src
 
-  lazy_download "libsdl.tar.gz" "https://www.libsdl.org/release/SDL2-2.0.3.tar.gz"
-  lazy_extract "libsdl.tar.gz" 
+  lazy_download "libsdlmixer.tar.gz" "https://www.libsdl.org/projects/SDL_mixer/release/SDL_mixer-1.2.12.tar.gz"
+  lazy_extract "libsdlmixer.tar.gz"
 
- autoconf_build $host "libsdl" 
+  # PATH must be patched to find the right libmikmod-config
+  PATH=$PREFIX/$host/bin:$PATH \
+    libsdlmixer_internal_build $host
 
- popDir
+  popDir
+}
 
-}  
+function libsdlmixer_internal_build
+{
+  local host=$1
+  autoconf_build $host "libsdlmixer"
+}

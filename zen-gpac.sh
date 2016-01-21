@@ -57,7 +57,7 @@ function gpac_build {
 function gpac_get_deps {
   echo opencore-amr
   echo zlib
-  echo libsdl
+  echo libsdl2
   echo freetype2
   echo libvorbis
   echo libogg
